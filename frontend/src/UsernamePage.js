@@ -6,22 +6,31 @@ function UsernamePage() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  // For logging in
+  const handleLoginSubmit = (e) => {
     e.preventDefault();
     if (username.trim() === "") {
       setError("Please enter a username");
       return;
     }
-    // Navigate to PasscodePage, passing username as state
-    navigate("/passcode", { state: { username } });
+    // Navigate to PasscodePage in login mode
+    navigate("/passcode", { state: { username, mode: "login" } });
+  };
+
+  // For registering
+  const handleRegisterClick = () => {
+    if (username.trim() === "") {
+      setError("Please enter a username for registration");
+      return;
+    }
+    // Navigate to PasscodePage in register mode
+    navigate("/passcode", { state: { username, mode: "register" } });
   };
 
   return (
     <div style={{ textAlign: "center", marginTop: "50px" }}>
       <h1>Welcome</h1>
-
-      {/* Username Input + Error Handling */}
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleLoginSubmit}>
         <input
           type="text"
           placeholder="Enter your username"
@@ -38,17 +47,16 @@ function UsernamePage() {
           type="submit"
           style={{ padding: "10px 20px", fontSize: "16px" }}
         >
-          Continue
+          Continue (Login)
         </button>
       </form>
       {error && <p style={{ color: "red" }}>{error}</p>}
-
-      {/* Create Account Button */}
+      <br />
       <button
-        onClick={() => navigate("/register")}
+        onClick={handleRegisterClick}
         style={{ padding: "10px 20px", fontSize: "16px", marginTop: "20px" }}
       >
-        Create Account
+        Create Account (Register)
       </button>
     </div>
   );

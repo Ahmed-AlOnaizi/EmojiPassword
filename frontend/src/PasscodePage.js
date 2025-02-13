@@ -1,33 +1,54 @@
 import React, { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function PasscodePage() {
   const location = useLocation();
-  const { username } = location.state || {};
+  const { username, mode } = location.state || {};
   const [passcode, setPasscode] = useState("");
   const [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
   const handleDigitClick = (digit) => {
     if (passcode.length < 4) {
       const newPasscode = passcode + digit;
       setPasscode(newPasscode);
       if (newPasscode.length === 4) {
-        // Call the backend API to verify the passcode
-        fetch("http://localhost:5000/api/login", {
+        // Determine the endpoint based on mode:
+        const endpoint =
+          mode === "register"
+            ? "http://localhost:5000/api/register"
+            : "http://localhost:5000/api/login";
+
+        // Send username and plain-text passcode as "pin"
+        fetch(endpoint, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ username, pin: newPasscode }),
         })
           .then((res) => res.json())
           .then((data) => {
-            if (data.message === "Login successful!") {
-              setMessage(`Passcode correct! Welcome, ${username}`);
+            if (mode === "register") {
+              if (data.message === "Registered successfully!") {
+                setMessage("Account created! Redirecting to login...");
+                setTimeout(() => {
+                  navigate("/"); // Return to UsernamePage for login
+                }, 2000);
+              } else {
+                setMessage(data.message || "Error creating account");
+                setPasscode(""); // Reset on error
+              }
             } else {
-              setMessage("Incorrect passcode. Try again.");
-              setTimeout(() => {
-                setPasscode("");
-                setMessage("");
-              }, 2000);
+              // Login mode
+              if (data.message === "Login successful!") {
+                setMessage(`Passcode correct! Welcome, ${username}`);
+                // Further actions on successful login can be added here
+              } else {
+                setMessage("Incorrect passcode. Try again.");
+                setTimeout(() => {
+                  setPasscode("");
+                  setMessage("");
+                }, 2000);
+              }
             }
           })
           .catch((err) => {
@@ -90,7 +111,9 @@ function PasscodePage() {
 
   return (
     <div style={{ textAlign: "center", marginTop: "50px" }}>
-      <h1>Enter Your Passcode</h1>
+      <h1>
+        {mode === "register" ? "Set Your Password" : "Enter Your Password"}
+      </h1>
       {username && <p>User: {username}</p>}
       <div style={{ marginBottom: "20px" }}>{renderPasscodeDots()}</div>
       {renderKeypad()}

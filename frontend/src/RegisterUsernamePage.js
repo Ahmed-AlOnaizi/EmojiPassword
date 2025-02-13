@@ -12,7 +12,7 @@ function RegisterUsernamePage() {
       setError("Please enter a username");
       return;
     }
-    // Navigate to the passcode-setting page, passing the username along
+    // Navigate to the password-setting page, passing the username along
     navigate("/set-passcode", { state: { username } });
   };
 

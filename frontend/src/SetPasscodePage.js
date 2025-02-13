@@ -13,22 +13,22 @@ function SetPasscodePage() {
       const newPasscode = passcode + digit;
       setPasscode(newPasscode);
       if (newPasscode.length === 4) {
-        // Once 4 digits are entered, register the user
+        // Once 4 digits are entered, send the registration request using "password"
         fetch("http://localhost:5000/api/register", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ username, pin: newPasscode }),
+          body: JSON.stringify({ username, password: newPasscode }),
         })
           .then((res) => res.json())
           .then((data) => {
             if (data.message === "Registered successfully!") {
               setMessage("Account created! Redirecting to login...");
               setTimeout(() => {
-                navigate("/"); // Redirect to the login page or UsernamePage
+                navigate("/"); // Redirect to the login page
               }, 2000);
             } else {
               setMessage(data.message || "Error creating account");
-              setPasscode(""); // Reset passcode if there was an error
+              setPasscode(""); // Reset passcode if error
             }
           })
           .catch((err) => {
@@ -92,7 +92,7 @@ function SetPasscodePage() {
 
   return (
     <div style={{ textAlign: "center", marginTop: "50px" }}>
-      <h1>Set Your Passcode</h1>
+      <h1>Set Your Password</h1>
       {username && <p>User: {username}</p>}
       <div style={{ marginBottom: "20px" }}>{renderPasscodeDots()}</div>
       {renderKeypad()}
