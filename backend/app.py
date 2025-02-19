@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 
@@ -59,6 +59,14 @@ def login():
         return jsonify({"message": "Login successful!"}), 200
     else:
         return jsonify({"message": "Invalid credentials"}), 400
+    
+
+@app.route('/admin')
+def admin_page():
+    # Query all users
+    users = User.query.all()
+    # Render the admin.html template, passing the users
+    return render_template('admin.html', users=users)
 
 if __name__ == '__main__':
     with app.app_context():
