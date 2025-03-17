@@ -22,3 +22,6 @@ Open a new terminal without terminating the other one
 Navigate to the frontend folder and run:
 npm install
 npm start
+
+Debugging: If there is an error with a module try running:
+npm install react-router-dom
