@@ -9,7 +9,7 @@ pip (or another Python package manager)
 Node.js 14+ (includes npm)
 
 Clone the Repository 
-using git clone (address)
+using: git clone https://github.com/Ahmed-AlOnaizi/EmojiPassword.git
 
 Install Python dependencies by runnning this:
 pip install -r requirements.txt
