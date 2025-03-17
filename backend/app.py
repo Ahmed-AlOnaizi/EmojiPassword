@@ -3,10 +3,10 @@ from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-CORS(app)  # Allow cross-origin requests for development
+CORS(app)  
 
 # Configure SQLite database
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'  # Database file
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'  
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -15,7 +15,7 @@ db = SQLAlchemy(app)
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
-    password = db.Column(db.String(128), nullable=False)  # Storing as plain text
+    password = db.Column(db.String(128), nullable=False)  
 
 @app.route('/api/hello', methods=['GET'])
 def hello():
@@ -25,7 +25,7 @@ def hello():
 def register():
     data = request.get_json()
     username = data.get("username")
-    pin = data.get("pin")  # This will be stored in plain text
+    pin = data.get("pin")  
 
     if not username or not pin:
         return jsonify({"message": "Missing username or PIN"}), 400
@@ -34,7 +34,7 @@ def register():
     if User.query.filter_by(username=username).first() is not None:
         return jsonify({"message": "User already exists"}), 400
 
-    # Create new user with plain text password
+    
     new_user = User(username=username, password=pin)
     db.session.add(new_user)
     db.session.commit()
@@ -65,10 +65,10 @@ def login():
 def admin_page():
     # Query all users
     users = User.query.all()
-    # Render the admin.html template, passing the users
+    
     return render_template('admin.html', users=users)
 
 if __name__ == '__main__':
     with app.app_context():
-        db.create_all()  # Create tables if they don't exist
+        db.create_all()  
     app.run(debug=True)

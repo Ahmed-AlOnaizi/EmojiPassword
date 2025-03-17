@@ -13,13 +13,13 @@ function PasscodePage() {
       const newPasscode = passcode + digit;
       setPasscode(newPasscode);
       if (newPasscode.length === 4) {
-        // Determine the endpoint based on mode:
+        
         const endpoint =
           mode === "register"
             ? "http://localhost:5000/api/register"
             : "http://localhost:5000/api/login";
 
-        // Send username and plain-text passcode as "pin"
+        
         fetch(endpoint, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -31,7 +31,7 @@ function PasscodePage() {
               if (data.message === "Registered successfully!") {
                 setMessage("Account created! Redirecting to login...");
                 setTimeout(() => {
-                  navigate("/"); // Return to UsernamePage for login
+                  navigate("/"); 
                 }, 2000);
               } else {
                 setMessage(data.message || "Error creating account");
@@ -41,7 +41,7 @@ function PasscodePage() {
               // Login mode
               if (data.message === "Login successful!") {
                 setMessage(`Passcode correct! Welcome, ${username}`);
-                // Further actions on successful login can be added here
+                
               } else {
                 setMessage("Incorrect passcode. Try again.");
                 setTimeout(() => {

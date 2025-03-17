@@ -1,0 +1,25 @@
+/* IPhoneLayout.css */
+.iphone-grid {
+    display: grid;
+    grid-template-columns: 60px 60px 60px;  /* 3 columns of 60px  */
+    grid-template-rows: 60px 60px 60px 60px; /* 4 rows of 60px  */
+    gap: 10px;
+    justify-content: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .emoji-button {
+    font-size: 24px;
+    width: 60px;
+    height: 60px;
+    cursor: pointer;
+    text-align: center;
+  }
+  
+  
+  .center-bottom {
+    grid-column: 2; 
+    grid-row: 4;    
+  }
+  

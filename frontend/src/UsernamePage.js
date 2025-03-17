@@ -13,7 +13,7 @@ function UsernamePage() {
       setError("Please enter a username");
       return;
     }
-    // Navigate to PasscodePage in login mode
+    
     navigate("/passcode", { state: { username, mode: "login" } });
   };
 
@@ -23,7 +23,7 @@ function UsernamePage() {
       setError("Please enter a username for registration");
       return;
     }
-    // Navigate to PasscodePage in register mode
+    
     navigate("/passcode", { state: { username, mode: "register" } });
   };
 
